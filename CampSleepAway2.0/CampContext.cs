@@ -17,8 +17,9 @@ public class CampContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        //"C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\"
         var configuration = new ConfigurationBuilder()
-            .SetBasePath("C:\\Users\\Samuel Sandenäs\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0")
+            .SetBasePath("C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\")
             .AddJsonFile("appsettings.json")
             .Build();
 

@@ -27,7 +27,6 @@ public class Selections
             foreach (var data in selectData)
             {
                 AnsiConsole.Markup($"[green]{data.Id}[/]\t[deepskyblue3_1]{data.FirstName}[/]\t[greenyellow]{data.LastName}[/]");
-                Console.WriteLine();
             }
         }
     }
@@ -57,8 +56,16 @@ public class Selections
 
             foreach (var data in selectData)
             {
-                AnsiConsole.Markup($"[green]{data.Person.Id}[/]\t[deepskyblue3_1]{data.Person.FirstName}[/]\t[greenyellow]{data.Person.LastName}[/]");
-                Console.WriteLine();
+                if (data is not null)
+                {
+                    AnsiConsole.Markup($"[green]{data.Person.Id}[/]\t[deepskyblue3_1]{data.Person.FirstName}[/]\t[greenyellow]{data.Person.LastName}[/]");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    AnsiConsole.Markup($"[green]{data.Person.Id}[/]\t[deepskyblue3_1]{data.Person.FirstName}[/]\t[greenyellow]{data.Person.LastName}[/]. This person doesn't have kins. Unlucky.");
+                    Console.WriteLine();
+                }
             }
         }
     }
@@ -71,6 +78,32 @@ public class Selections
             foreach (var data in selectData)
             {
                 AnsiConsole.Markup($"[green]{data.Id}[/]\t[deepskyblue3_1]{data.FirstName}[/]\t[greenyellow]{data.LastName}[/]");
+                Console.WriteLine();
+            }
+        }
+    }
+    public static void SelectCamperStay()
+    {
+        using (var campContext = new CampContext())
+        {
+            var selectData = campContext.Stays.Select(x => x).ToList();
+
+            foreach (var data in selectData)
+            {
+                AnsiConsole.Markup($"[green]{data.Id}[/]\t[deepskyblue3_1]{data.Camper.Id}[/]\t[greenyellow]{data.Cabin.Id}[/]");
+                Console.WriteLine();
+            }
+        }
+    }
+    public static void SelectCouncelorAssignments()
+    {
+        using (var campContext = new CampContext())
+        {
+            var selectData = campContext.Assignments.Select(x => x).ToList();
+
+            foreach (var data in selectData)
+            {
+                AnsiConsole.Markup($"[green]{data.Id}[/]\t[deepskyblue3_1]{data.Councelor.Id}[/]\t[greenyellow]{data.Cabin.Id}[/]");
                 Console.WriteLine();
             }
         }

@@ -1,9 +1,12 @@
 ﻿using CampSleepAway2._0;
+using Spectre.Console;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using System;
 
 using (var campContext = new CampContext())
 {
+    
+    //Menu();
     //var cabin = new Cabin()
     //{
     //    Title = "TestCabin 1",
@@ -16,11 +19,10 @@ using (var campContext = new CampContext())
     //    NumberOfResidence = 5,
     //};
 
-    //campContext.Councelors.Add(new Councelor()
-    //{
-    //    PersonId = 8
-    //});
-    //campContext.SaveChanges();
+    ////campContext.Councelors.Add(new Councelor()
+    ////{
+    //////    PersonId = 8
+    ////});
     //campContext.Cabins.Add(cabin);
     //campContext.Cabins.Add(cabin1);
     //campContext.SaveChanges();
@@ -31,12 +33,13 @@ using (var campContext = new CampContext())
     //    CamperId = 1
     //});
     //campContext.SaveChanges();
-
-    Selections.SelectCabins();
+    string dirr = Directory.GetCurrentDirectory();
+    Console.WriteLine(dirr);
+    //Selections.SelectCabins();
     Selections.SelectPersonFromCampers();
-    Selections.SelectPersonFromCouncelor();
-    Selections.SelectPersonFromNextOfKin(1);
-    Selections.SelectPerson();
+    //Selections.SelectPersonFromCouncelor();
+    //Selections.SelectPersonFromNextOfKin(1);
+    //Selections.SelectPerson();
 
     //var person = new Person()
     //{
@@ -47,7 +50,7 @@ using (var campContext = new CampContext())
     //campContext.People.Add(person);
     //campContext.SaveChanges();
 
-    //var people = ReadCSV("C:\\Users\\Samuel Sandenäs\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\data.csv");
+    //var people = ReadCSV("C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\data.csv");
     //Console.WriteLine($"{people.Count} hittades i CSV-filen");
 
     //foreach (var person in people)
@@ -55,6 +58,83 @@ using (var campContext = new CampContext())
     //    campContext.People.Add(person);
     //}
     //campContext.SaveChanges();
+}
+
+static void Menu()
+{
+    string[] menuSelections = new[] 
+    {
+        "Show data", "Assign counselor", "Assign camper to cabin",
+        "Add a visit", "Add data", "Update data", "Delete data",
+    };
+    var menuSelection = AnsiConsole.Prompt(
+    new SelectionPrompt<string>()
+        .Title("Main menu: [blue]What do you want to do?[/]?")
+        .PageSize(10)
+        .MoreChoicesText("[grey](Move up and down with arrows)[/]")
+        .AddChoices(menuSelections));
+
+    if (menuSelection == menuSelections[0])
+    {
+        string[] showDataSelections= new[]
+    {
+        "Cabins", "Campers", "Camper stays", "Councelors",
+        "Councelor assignments", "Next of kin", "Visits", "People",
+        "Show all"
+    };
+        var showData = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Show data: [blue]What data do you wanna look at?[/]?")
+            .PageSize(10)
+            .MoreChoicesText("[grey](Move up and down with arrows)[/]")
+            .AddChoices(showDataSelections));
+        if (showData == showDataSelections[0])
+        {
+            Selections.SelectCabins();
+        }
+        else if (showData == showDataSelections[1])
+        {
+            Selections.SelectPersonFromCampers();
+        }
+        else if (showData == showDataSelections[2])
+        {
+            Selections.SelectCamperStay();
+        }
+        else if (showData == showDataSelections[3])
+        {
+            Selections.SelectPersonFromCouncelor();
+        }
+        else if (showData == showDataSelections[4])
+        {
+            Selections.SelectCouncelorAssignments();
+        }
+        //else if (showData == showDataSelections[5])
+        //{
+        //    var arrOfCampers = Selections.SelectPersonFromCampers();
+        //    foreach(var data in Selections.SelectPersonFromCampers())
+        //    {
+
+        //    }
+        //    string[] selectCamper = new[]
+        //    {
+        //        "Show data", "Assign counselor", "Assign camper to cabin",
+        //        "Add a visit", "Add data", "Update data", "Delete data",
+        //    };
+
+        //    var selectCamperToShowKin = AnsiConsole.Prompt(
+        //    new SelectionPrompt<string>()
+        //        .Title("Main menu: [blue]What do you want to do?[/]?")
+        //        .PageSize(10)
+        //        .MoreChoicesText("[grey](Move up and down with arrows)[/]")
+        //        .AddChoices());
+        //}
+
+
+
+
+
+
+    }
 }
 
 static List<Person> ReadCSV(string filePath)
