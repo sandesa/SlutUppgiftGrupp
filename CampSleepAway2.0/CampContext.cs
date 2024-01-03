@@ -11,9 +11,9 @@ public class CampContext : DbContext
     public DbSet<Councelor> Councelors { get; set; }
     public DbSet<NextOfKin> NextOfKins { get; set; }
     public DbSet<Cabin> Cabins { get; set; }
-    public DbSet<CamperStay> Stays { get; set; }
-    public DbSet<CouncelorAssignments> Assignments { get; set; }
-    public DbSet<Visits> Visits { get; set; }
+    public DbSet<CamperStay> CamperStays { get; set; }
+    public DbSet<CouncelorAssignment> CouncelorAssignments { get; set; }
+    public DbSet<Visit> Visits { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
