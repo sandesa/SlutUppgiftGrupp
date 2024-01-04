@@ -409,6 +409,7 @@ static void AddData()
     string[] addDataSelections = new[]
     {
         "Add new person",
+        "Add new Camper",
     };
 
     var addDataSelection = AnsiConsole.Prompt(
@@ -421,6 +422,10 @@ static void AddData()
     if (addDataSelection == addDataSelections[0])
     {
         AddPerson();
+    }
+    else if (addDataSelection == addDataSelections[1])
+    {
+        AddCamper();
     }
 }
 
@@ -451,6 +456,48 @@ static void AddPerson()
     }
     AnsiConsole.Markup($"[blue]Person {newPerson.FirstName} {newPerson.LastName} added successfully.[/]");
 }
+
+static void AddCamper()
+{
+    AnsiConsole.MarkupLine($"[blue]Add a new camper:[/]");
+
+    AnsiConsole.MarkupLine("Enter Camper's first name:");
+    var firstName = Console.ReadLine();
+
+    AnsiConsole.MarkupLine("Enter Camper's last name:");
+    var lastName = Console.ReadLine();
+
+    AnsiConsole.MarkupLine("Enter Camper's birth date (mm/dd/yyyy):");
+    var birthDateString = Console.ReadLine();
+    var birthDate = DateTime.Parse (birthDateString);
+
+    var existingPersons = GetExistingPersons();
+
+    var selectedPerson = AnsiConsole.Prompt(
+        new SelectionPrompt<Person>()
+        .PageSize(10)
+        .MoreChoicesText("[green](Move up and down with arrows)[/]")
+        .AddChoices(existingPersons));
+
+    var newCamper = new Camper
+    {
+        //FirstName = firstName,
+        //LastName = lastName,
+        //BirthDate = birthDate,
+        PersonId = selectedPerson.Id
+    };
+
+    AnsiConsole.Markup($"[blue]Camper {selectedPerson.FullName} added successfully.[/]");
+}
+
+static List <Person> GetExistingPersons()
+{
+    using (CampContext context = new CampContext())
+    {
+        return context.People.ToList();
+    }
+}
+
 
 static void AddVisit()
 {
