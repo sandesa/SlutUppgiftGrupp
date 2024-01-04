@@ -14,6 +14,9 @@ public class Person
     [Required]
     public string LastName { get; set; } = null!;
 
+    [NotMapped]
+    public string FullName => $"{FirstName} {LastName}";
+
     [DataType(DataType.Date)]
     public DateTime BirthDate { get; set; } 
 }

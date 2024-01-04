@@ -20,6 +20,14 @@ using (var campContext = new CampContext())
     //    NumberOfResidence = 5,
     //};
 
+    //var councelor = new Councelor()
+    //{
+    //    PersonId = 4
+    //};
+    //campContext.Councelors.Add(councelor);
+    //campContext.SaveChanges();
+
+
     //campContext.Councelors.Add(new Councelor()
     //{
     ////    PersonId = 8
@@ -44,7 +52,7 @@ using (var campContext = new CampContext())
 
     //var camper = new Camper()
     //{
-    //    PersonId = 1
+    //    PersonId = 3
     //};
     //var person = new Person()
     //{
@@ -171,12 +179,12 @@ static void DeleteData()
             .AddChoices(Selections.SelectionsToArray.SelectCampers()));
             var idToDelete = int.Parse(selectDataToDelete[..2]);
 
-            Console.WriteLine($"Are you sure you want to delete camper: {Selections.Camper.SelectCamperFromID(idToDelete)}?  y/n");
+            Console.WriteLine($"Are you sure you want to delete camper: {Selections.Camper.SelectCamperFromPersonID(idToDelete)}?  y/n");
             string warning = Console.ReadLine();
 
             if (warning == "y")
             {
-                RemoveData.Camper.DeleteCamper(idToDelete);
+                RemoveData.Camper.DeleteCamper(Selections.Camper.SelectCamperIdFromPersonId(idToDelete));
             }
             else
             {
@@ -256,7 +264,7 @@ static void AssignCouncelor()
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
         .AddChoices(Selections.SelectionsToArray.SelectCouncelors()));
-    var councelorId = int.Parse(selectCouncelor[..2]);
+    var councelorId = Selections.Councelor.SelectCouncelorIdFromPersonId(int.Parse(selectCouncelor[..2]));
 
     using (var campContext = new CampContext())
     {
@@ -276,7 +284,7 @@ static void AssignCouncelor()
 
                 if (checkCabins is null)
                 {
-                    AnsiConsole.Markup($"Type in [blue]start date[/] and the [blue]end date[/] in the format dd/mm/yyyy");
+                    AnsiConsole.MarkupLine($"Type in [blue]start date[/] and the [blue]end date[/] in the format mm/dd/yyyy:");
                     var startDate = DateTime.Parse(Console.ReadLine());
                     var endDate = DateTime.Parse(Console.ReadLine());
 
@@ -287,7 +295,9 @@ static void AssignCouncelor()
                         StartDate = startDate,
                         EndDate = endDate
                     };
-                    AnsiConsole.Markup($"[blue]Councelor[/] is assigned to cabin with ID: [blue]{cabinId}[/]");
+                    campContext.CouncelorAssignments.Add(assignCouncelor);
+                    campContext.SaveChanges();
+                    AnsiConsole.Markup($"[blue]Councelor[/] is assigned to cabin: [blue]{Selections.Cabins.SelectCabinTitleFromID(cabinId)}[/]");
                 }
             }
         }
@@ -302,7 +312,7 @@ static void AssignCamperToCabin()
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
         .AddChoices(Selections.SelectionsToArray.SelectCampers()));
-    var camperId = int.Parse(selectCamper[..2]);
+    var camperId = Selections.Camper.SelectCamperIdFromPersonId(int.Parse(selectCamper[..2]));
 
     using (var campContext = new CampContext())
     {
@@ -323,7 +333,7 @@ static void AssignCamperToCabin()
                 checkCabins = campContext.CamperStays.Count(c => c.CabinId == cabinId);
                 if (checkCabins <= 4 )
                 {
-                    AnsiConsole.Markup($"Type in [blue]start date[/] and the [blue]end date[/] in the format dd/mm/yyyy");
+                    AnsiConsole.MarkupLine($"Type in [blue]start date[/] and the [blue]end date[/] in the format mm/dd/yyyy");
                     var startDate = DateTime.Parse(Console.ReadLine());
                     var endDate = DateTime.Parse(Console.ReadLine());
 
@@ -334,7 +344,9 @@ static void AssignCamperToCabin()
                         StartDate = startDate,
                         EndDate = endDate
                     };
-                    AnsiConsole.Markup($"[blue]Camper[/] is assigned to cabin with ID: [blue]{cabinId}[/]");
+                    campContext.CamperStays.Add(assignCamperToCabin);
+                    campContext.SaveChanges();
+                    AnsiConsole.Markup($"[blue]Camper[/] is assigned to cabin: [blue]{Selections.Cabins.SelectCabinTitleFromID(cabinId)}[/]");
                 }
             }
         }

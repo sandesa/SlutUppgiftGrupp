@@ -70,25 +70,36 @@ public class Selections
 
     public class Camper
     {
-        public static string SelectCamperFromID(int id)
+        public static string SelectCamperFromPersonID(int id)
         {
             using (var campContext = new CampContext())
             {
-                //var selectData = from x in campContext.Campers
-                //           join y in campContext.People
-                //           on x.Id equals y.Id
-                //           where x.Id == id
-                //           select x;
-                var selectData = campContext.Campers.Select(x => x)
-                                            .Where(x => x.Id == id).ToList();
+                var selectData = campContext.Campers.Select(x => x.Person).Where(c => c.Id == id).ToList();
+                
                 if (selectData is not null)
                 {
                     foreach (var data in selectData)
                     {
-                        return data.Person.FirstName+ " " + data.Person.LastName;
+                    return data.FullName;
                     }
                 }
                 return "There is no person with ID: " + id;
+            }
+        }
+        public static int SelectCamperIdFromPersonId(int id)
+        {
+            using (var campContext = new CampContext())
+            {
+                var selectData = campContext.Campers.Select(x => x).Where(c => c.PersonId == id).ToList();
+
+                if (selectData is not null)
+                {
+                    foreach (var data in selectData)
+                    {
+                        return data.Id;
+                    }
+                }
+                return 0;
             }
         }
     }
@@ -100,7 +111,22 @@ public class Selections
 
     public class Councelor
     {
+        public static int SelectCouncelorIdFromPersonId(int id)
+        {
+            using (var campContext = new CampContext())
+            {
+                var selectData = campContext.Councelors.Select(x => x).Where(c => c.PersonId == id).ToList();
 
+                if (selectData is not null)
+                {
+                    foreach (var data in selectData)
+                    {
+                        return data.Id;
+                    }
+                }
+                return 0;
+            }
+        }
     }
 
     public class CouncelorAssignment
@@ -163,10 +189,12 @@ public class Selections
             {
                 var selectData = campContext.Councelors.Select(x => x.Person).ToList();
                 List<string> result = new List<string>();
+                string title = "ID:\tCouncelor fullname:\tBirthdate:";
+                result.Add(title);
 
                 foreach (var data in selectData)
                 {
-                    string temp = $"{data.Id}\t{data.FirstName} {data.LastName}\t{data.BirthDate}";
+                    string temp = $"{data.Id}\t{data.FullName}\t\t{data.BirthDate}";
                     result.Add(temp);
                 }
                 return result.ToArray();
@@ -177,7 +205,7 @@ public class Selections
         {
             using (var campContext = new CampContext())
             {
-                var selectData = campContext.NextOfKins.Select(x => x)
+                var selectData = campContext.NextOfKins.Include(x => x.Person)
                                             .OrderBy(c => c.Camper.Person.FirstName)
                                             .ToList();
                 List<string> result = new List<string>();
@@ -197,10 +225,12 @@ public class Selections
             {
                 var selectData = campContext.People.Select(x => x).ToList();
                 List<string> result = new List<string>();
+                string title = "ID:\tFull name:\t\tBirthdate:";
+                result.Add(title);
 
                 foreach (var data in selectData)
                 {
-                    string temp = $"{data.Id}\t{data.FirstName} {data.LastName}\t{data.BirthDate}";
+                    string temp = $"{data.Id}\t{data.FullName}\t\t{data.BirthDate}";
                     result.Add(temp);
                 }
                 return result.ToArray();
@@ -211,12 +241,15 @@ public class Selections
         {
             using (var campContext = new CampContext())
             {
-                var selectData = campContext.CamperStays.Select(x => x).ToList();
+                var selectData = campContext.CamperStays.Include(x => x.Camper.Person)
+                                                        .ToList();
                 List<string> result = new List<string>();
+                string title = "ID:\tCamper fullname:\tCabinID:\tStartDate:\t\tEndDate:";
+                result.Add(title);
 
                 foreach (var data in selectData)
                 {
-                    string temp = $"{data.Id}\t{data.Camper.Person.FirstName} {data.Camper.Person.LastName}\t{data.Cabin.Id}\t{data.StartDate}\t{data.EndDate}";
+                    string temp = $"{data.Id}\t{data.Camper.Person.FirstName} {data.Camper.Person.LastName}\t\t{data.CabinId}\t\t{data.StartDate}\t{data.EndDate}";
                     result.Add(temp);
                 }
                 return result.ToArray();
@@ -227,12 +260,13 @@ public class Selections
         {
             using (var campContext = new CampContext())
             {
-                var selectData = campContext.CouncelorAssignments.Select(x => x).ToList();
+                var selectData = campContext.CouncelorAssignments.Include(x => x.Councelor.Person)
+                                                                 .Include(x => x.Cabin).ToList();
                 List<string> result = new List<string>();
 
                 foreach (var data in selectData)
                 {
-                    string temp = $"{data.Id}\t{data.Councelor.Person.FirstName} {data.Councelor.Person.LastName} is assigned to cabin: {data.Cabin.Id}\t{data.StartDate} {data.EndDate}";
+                    string temp = $"ID:{data.Id}  '{data.Councelor.Person.FullName}' is assigned to cabin: '{data.Cabin.Id}'.  StartDate: {data.StartDate}  EndDate:{data.EndDate}";
                     result.Add(temp);
                 }
                 return result.ToArray();

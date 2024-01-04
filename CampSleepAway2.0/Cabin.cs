@@ -11,7 +11,7 @@ public class Cabin
     public string Title { get; set; } = null!;
 
     [Required]
-    [Precision(4)]
+    [Range(0,4)]
     public int NumberOfResidence { get; set; }
 
     public CouncelorAssignment Councelor { get; set; } = null!;

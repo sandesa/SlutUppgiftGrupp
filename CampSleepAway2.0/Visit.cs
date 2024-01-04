@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampSleepAway2._0;
 
@@ -13,7 +14,7 @@ public class Visit
     [DataType(DataType.Date)]
     public DateTime EndDate { get; set; }
 
-    [Required]
+    [ForeignKey("CamperId")]
     public int CamperId { get; set; }
     public Camper Camper { get; set; } = null!;
 

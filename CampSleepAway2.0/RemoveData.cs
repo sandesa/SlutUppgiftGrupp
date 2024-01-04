@@ -49,7 +49,7 @@ public class RemoveData
                     int result = campContext.SaveChanges();
                     if (result > 0)
                     {
-                        Console.WriteLine($"The camper with the name: {Selections.Camper.SelectCamperFromID(id)} was deleted.");
+                        Console.WriteLine($"The camper was deleted.");
                     }
                     else
                     {
