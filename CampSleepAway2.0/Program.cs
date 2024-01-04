@@ -115,8 +115,6 @@ static void Menu()
     {
         DeleteData();
     }
-
-
 }
 
 static void DeleteData()
@@ -136,7 +134,7 @@ static void DeleteData()
         .AddChoices(tableSelections));
     if (selectTable == tableSelections[0])
     {
-        if (Selections.SelectionsToArray.SelectCabins().Count() == 0)
+        if (Selections.Cabins.SelectCabins().Count() == 0)
         {
             Console.WriteLine("The table is empty.");
         }
@@ -147,7 +145,7 @@ static void DeleteData()
             .Title("Select [blue]data[/] to delete: ")
             .PageSize(10)
             .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-            .AddChoices(Selections.SelectionsToArray.SelectCabins()));
+            .AddChoices(Selections.Cabins.SelectCabins()));
             var idToDelete= int.Parse(selectDataToDelete[..2]);
 
             Console.WriteLine($"Are you sure you want to delete cabin: {Selections.Cabins.SelectCabinTitleFromID(idToDelete)}?  y/n");
@@ -165,7 +163,7 @@ static void DeleteData()
     }
     else if (selectTable == tableSelections[1])
     {
-        if (Selections.SelectionsToArray.SelectCampers().Count() == 0)
+        if (Selections.Camper.SelectCampers().Count() == 0)
         {
             Console.WriteLine("The table is empty.");
         }
@@ -176,10 +174,10 @@ static void DeleteData()
             .Title("Select [blue]data[/] to delete: ")
             .PageSize(10)
             .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-            .AddChoices(Selections.SelectionsToArray.SelectCampers()));
+            .AddChoices(Selections.Presentation.SelectCampers()));
             var idToDelete = int.Parse(selectDataToDelete[..2]);
 
-            Console.WriteLine($"Are you sure you want to delete camper: {Selections.Camper.SelectCamperFromPersonID(idToDelete)}?  y/n");
+            Console.WriteLine($"Are you sure you want to delete camper: '{Selections.Camper.SelectCamperFromPersonID(idToDelete)}'?  y/n");
             string warning = Console.ReadLine();
 
             if (warning == "y")
@@ -190,6 +188,180 @@ static void DeleteData()
             {
                 Console.WriteLine("The camper was not deleted.");
             }   
+        }
+    }
+    else if (selectTable == tableSelections[2])
+    {
+        if (Selections.CamperStay.SelectCamperStays().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.CamperStay.SelectCamperStays()));
+            var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete the data?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.CamperStay.DeleteCamperStay(idToDelete);
+            }
+            else
+            {
+                Console.WriteLine("The camper stay was not deleted.");
+            }
+        }
+    }
+    else if (selectTable == tableSelections[3])
+    {
+        if (Selections.Councelor.SelectCouncelors().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.Councelor.SelectCouncelors()));
+            var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete councelor: '{Selections.Councelor.SelectCouncelorFromPersonID(idToDelete)}'?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.Councelor.DeleteCouncelor(Selections.Councelor.SelectCouncelorIdFromPersonId(idToDelete));
+            }
+            else
+            {
+                Console.WriteLine("The councelor was not deleted.");
+            }
+        }
+    }
+    else if (selectTable == tableSelections[4])
+    {
+        if (Selections.CouncelorAssignment.SelectCouncelorAssignments().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.CouncelorAssignment.SelectCouncelorAssignments()));
+            var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete councelor assignment data?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.CouncelorAssignment.DeleteCouncelorAssignment(idToDelete);
+            }
+            else
+            {
+                Console.WriteLine("The councelor assignment data was not deleted.");
+            }
+        }
+    }
+    else if (selectTable == tableSelections[5])
+    {
+        if (Selections.NextOfKin.SelectNextOfKin().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.NextOfKin.SelectNextOfKin()));
+            var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete data?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.NextOfKin.DeleteNextOfKin(idToDelete);
+            }
+            else
+            {
+                Console.WriteLine("The next of kin data was not deleted.");
+            }
+        }
+    }
+    else if (selectTable == tableSelections[6])
+    {
+        if (Selections.Visit.SelectVisits().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.Visit.SelectVisits()));
+            var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete data?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.Visit.DeleteVisit(idToDelete);
+            }
+            else
+            {
+                Console.WriteLine("The visit data was not deleted.");
+            }
+        }
+    }
+    else if (selectTable == tableSelections[7])
+    {
+        if (Selections.Person.SelectPeople().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.Person.SelectPeople()));
+            var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete '{Selections.Person.SelectFullNameFromPersonID(idToDelete)}' and all the connections?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.Camper.DeleteCamper(Selections.Camper.SelectCamperIdFromPersonId(idToDelete));
+            }
+            else
+            {
+                Console.WriteLine("The camper was not deleted.");
+            }
         }
     }
 }
@@ -224,35 +396,35 @@ static void SelectData()
             .AddChoices(showDataSelections));
         if (showData == showDataSelections[0])
         {
-            PrintData(Selections.SelectionsToArray.SelectCabins());
+            PrintData(Selections.Presentation.SelectCabins());
         }
         else if (showData == showDataSelections[1])
         {
-            PrintData(Selections.SelectionsToArray.SelectCampers());
+            PrintData(Selections.Presentation.SelectCampers());
         }
         else if (showData == showDataSelections[2])
         {
-            PrintData(Selections.SelectionsToArray.SelectCamperStays());
+            PrintData(Selections.Presentation.SelectCamperStays());
         }
         else if (showData == showDataSelections[3])
         {
-            PrintData(Selections.SelectionsToArray.SelectCouncelors());
+            PrintData(Selections.Presentation.SelectCouncelors());
         }
         else if (showData == showDataSelections[4])
         {
-            PrintData(Selections.SelectionsToArray.SelectCouncelorAssignments());
+            PrintData(Selections.Presentation.SelectCouncelorAssignments());
         }
         else if (showData == showDataSelections[5])
         {
-            PrintData(Selections.SelectionsToArray.SelectNextOfKinToCampers());
+            PrintData(Selections.Presentation.SelectNextOfKin());
         }
         else if (showData == showDataSelections[6])
         {
-            PrintData(Selections.SelectionsToArray.SelectVisits());
+            PrintData(Selections.Presentation.SelectVisits());
         }
         else if (showData == showDataSelections[7])
         {
-            PrintData(Selections.SelectionsToArray.SelectPeople());
+            PrintData(Selections.Presentation.SelectPeople());
         }
     }
 
@@ -263,7 +435,7 @@ static void AssignCouncelor()
         .Title("Select [blue]councelor[/] to assign: ")
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        .AddChoices(Selections.SelectionsToArray.SelectCouncelors()));
+        .AddChoices(Selections.Presentation.SelectCouncelors()));
     var councelorId = Selections.Councelor.SelectCouncelorIdFromPersonId(int.Parse(selectCouncelor[..2]));
 
     using (var campContext = new CampContext())
@@ -277,7 +449,7 @@ static void AssignCouncelor()
                     .Title("Select [blue]cabin[/] to assign the [blue]councelor[/] to: ")
                     .PageSize(10)
                     .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                    .AddChoices(Selections.SelectionsToArray.SelectCabins()));
+                    .AddChoices(Selections.Presentation.SelectCabins()));
                 var cabinId = int.Parse(selectCabin[..2]);
 
                 var checkCabins = campContext.CouncelorAssignments.Find(cabinId);
@@ -311,7 +483,7 @@ static void AssignCamperToCabin()
         .Title("Select [blue]councelor[/] to assign: ")
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        .AddChoices(Selections.SelectionsToArray.SelectCampers()));
+        .AddChoices(Selections.Presentation.SelectCampers()));
     var camperId = Selections.Camper.SelectCamperIdFromPersonId(int.Parse(selectCamper[..2]));
 
     using (var campContext = new CampContext())
@@ -324,7 +496,7 @@ static void AssignCamperToCabin()
                 .Title("Select [blue]cabin[/] to assign the [blue]councelor[/] to: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.SelectionsToArray.SelectCabins()));
+                .AddChoices(Selections.Presentation.SelectCabins()));
             var cabinId = int.Parse(selectCabin[..2]);
 
             var checkCabins = campContext.CouncelorAssignments.Count(c => c.CabinId == cabinId);
