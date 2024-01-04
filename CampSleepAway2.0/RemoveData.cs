@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,10 +32,64 @@ public class RemoveData
     //            Console.WriteLine($"The {typeof(T).Name} with ID {id} couldn't be found.");
     //        }
     //    }
-    //    RemoveData.DeleteEntity<Cabin>(cabinId);
-    //    RemoveData.DeleteEntity<Camper>(camperId);
     //}
-
+    //public class Cabin
+    //{
+    //    public static void DeleteCabin(int id)
+    //    {
+    //        DeleteEntity<Cabin>(id);
+    //    }
+    //}
+    //public class Camper
+    //{
+    //    public static void DeleteCamper(int id)
+    //    {
+    //        DeleteEntity<Camper>(id);
+    //    }
+    //}
+    //public class CamperStay
+    //{
+    //    public static void DeleteCamperStay(int id)
+    //    {
+    //        DeleteEntity<Camper>(id);
+    //    }
+    //}
+    //public class Councelor
+    //{
+    //    public static void DeleteCouncelor(int id)
+    //    {
+    //        DeleteEntity<Councelor>(id);
+    //    }
+    //}
+    //public class CouncelorAssignment
+    //{
+    //    public static void DeleteCouncelorAssignment(int id)
+    //    {
+    //        DeleteEntity<CouncelorAssignment>(id);
+    //    }
+    //}
+    //public class NextOfKin
+    //{
+    //    public static void DeleteNextOfKin(int id)
+    //    {
+    //        DeleteEntity<NextOfKin>(id);
+    //    }
+    //}
+    //public class Visit
+    //{
+    //    public static void DeleteNextOfKin(int id)
+    //    {
+    //        DeleteEntity<NextOfKin> (id);
+    //    }
+    //}
+    //public class Person
+    //{
+    //    public static void DeletePerson(int id)
+    //    {
+    //        DeleteEntity<Person>(id);
+    //    }
+    //}
+    
     public class Cabin
     {
         public static void DeleteCabin(int id)
