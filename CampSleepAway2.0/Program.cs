@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage.Json;
 using System;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 
 using (var campContext = new CampContext())
 {
@@ -140,24 +141,40 @@ static void DeleteData()
         }
         else
         {
-            var selectDataToDelete= AnsiConsole.Prompt(
+            var deleteAllOrOne = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title("Select [blue]data[/] to delete: ")
+            .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
             .PageSize(10)
             .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-            .AddChoices(Selections.Cabins.SelectCabins()));
-            var idToDelete= int.Parse(selectDataToDelete[..2]);
-
-            Console.WriteLine($"Are you sure you want to delete cabin: {Selections.Cabins.SelectCabinTitleFromID(idToDelete)}?  y/n");
-            string warning = Console.ReadLine();
-
-            if (warning == "y")
+            .AddChoices(new[]
             {
-                RemoveData.Cabin.DeleteCabin(idToDelete);
+                "All", "One"
+            } ));
+            if (deleteAllOrOne == "All")
+            {
+                RemoveData.Cabins.DeleteAllCabins();
             }
             else
             {
-                Console.WriteLine("The cabin was not deleted.");
+                var selectDataToDelete= AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("Select [blue]data[/] to delete: ")
+                .PageSize(10)
+                .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                .AddChoices(Selections.Cabins.SelectCabins()));
+                var idToDelete= int.Parse(selectDataToDelete[..2]);
+
+                Console.WriteLine($"Are you sure you want to delete cabin: {Selections.Cabins.SelectCabinTitleFromID(idToDelete)}?  y/n");
+                string warning = Console.ReadLine();
+
+                if (warning == "y")
+                {
+                    RemoveData.Cabins.DeleteCabin(idToDelete);
+                }
+                else
+                {
+                    Console.WriteLine("The cabin was not deleted.");
+                }
             }
         }
     }
@@ -169,25 +186,41 @@ static void DeleteData()
         }
         else
         {
-            var selectDataToDelete = AnsiConsole.Prompt(
+            var deleteAllOrOne = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title("Select [blue]data[/] to delete: ")
+            .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
             .PageSize(10)
             .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-            .AddChoices(Selections.Presentation.SelectCampers()));
-            var idToDelete = int.Parse(selectDataToDelete[..2]);
-
-            Console.WriteLine($"Are you sure you want to delete camper: '{Selections.Camper.SelectCamperFromPersonID(idToDelete)}'?  y/n");
-            string warning = Console.ReadLine();
-
-            if (warning == "y")
+            .AddChoices(new[]
             {
-                RemoveData.Camper.DeleteCamper(Selections.Camper.SelectCamperIdFromPersonId(idToDelete));
+                "All", "One"
+            }));
+            if (deleteAllOrOne == "All")
+            {
+                RemoveData.Campers.DeleteAllCampers();
             }
             else
             {
-                Console.WriteLine("The camper was not deleted.");
-            }   
+                var selectDataToDelete = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("Select [blue]data[/] to delete: ")
+                .PageSize(10)
+                .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                .AddChoices(Selections.Camper.SelectCampers()));
+                var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+                Console.WriteLine($"Are you sure you want to delete camper: '{Selections.Camper.SelectCamperFromPersonID(idToDelete)}'?  y/n");
+                string warning = Console.ReadLine();
+
+                if (warning == "y")
+                {
+                    RemoveData.Campers.DeleteCamper(Selections.Camper.SelectCamperIdFromPersonId(idToDelete));
+                }
+                else
+                {
+                    Console.WriteLine("The camper was not deleted.");
+                }   
+            }
         }
     }
     else if (selectTable == tableSelections[2])
@@ -211,7 +244,7 @@ static void DeleteData()
 
             if (warning == "y")
             {
-                RemoveData.CamperStay.DeleteCamperStay(idToDelete);
+                RemoveData.CamperStays.DeleteCamperStay(idToDelete);
             }
             else
             {
@@ -240,7 +273,7 @@ static void DeleteData()
 
             if (warning == "y")
             {
-                RemoveData.Councelor.DeleteCouncelor(Selections.Councelor.SelectCouncelorIdFromPersonId(idToDelete));
+                RemoveData.Councelors.DeleteCouncelor(Selections.Councelor.SelectCouncelorIdFromPersonId(idToDelete));
             }
             else
             {
@@ -269,7 +302,7 @@ static void DeleteData()
 
             if (warning == "y")
             {
-                RemoveData.CouncelorAssignment.DeleteCouncelorAssignment(idToDelete);
+                RemoveData.CouncelorAssignments.DeleteCouncelorAssignment(idToDelete);
             }
             else
             {
@@ -298,7 +331,7 @@ static void DeleteData()
 
             if (warning == "y")
             {
-                RemoveData.NextOfKin.DeleteNextOfKin(idToDelete);
+                RemoveData.NextOfKins.DeleteNextOfKin(idToDelete);
             }
             else
             {
@@ -327,7 +360,7 @@ static void DeleteData()
 
             if (warning == "y")
             {
-                RemoveData.Visit.DeleteVisit(idToDelete);
+                RemoveData.Visits.DeleteVisit(idToDelete);
             }
             else
             {
@@ -356,7 +389,7 @@ static void DeleteData()
 
             if (warning == "y")
             {
-                RemoveData.Camper.DeleteCamper(Selections.Camper.SelectCamperIdFromPersonId(idToDelete));
+                RemoveData.People.DeletePerson(idToDelete);
             }
             else
             {
@@ -378,6 +411,102 @@ static void AddData()
 
 static void AddVisit()
 {
+    //var selectCamper = AnsiConsole.Prompt(
+    //new SelectionPrompt<string>()
+    //    .Title("Select [blue]camper[/] to receive a visit: ")
+    //    .PageSize(10)
+    //    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+    //    .AddChoices(Selections.Camper.SelectCampers()));
+    //var camperId = Selections.Camper.SelectCamperIdFromPersonId(int.Parse(selectCamper[..2]));
+
+    //using (var campContext = new CampContext())
+    //{
+    //    var checkCouncelor = campContext.Visits.Find(camperId);
+    //    {   
+
+    //        var selectNextOfKin = AnsiConsole.Prompt(
+    //        new SelectionPrompt<string>()
+    //            .Title("Select [blue]next of kin[/] that will [blue]visit[/] the camper: ")
+    //            .PageSize(10)
+    //            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+    //            .AddChoices(Selections.NextOfKin.SelectNextOfKinToCamperFromId(camperId)));
+    //        var nextOfKinId = int.Parse(selectNextOfKin[..2]);
+    //        //var kin = new 
+
+
+    //        AnsiConsole.MarkupLine($"Type in [blue]start date[/] and the [blue]end date[/] in the format mm/dd/yyyy:");
+    //        var startDate = DateTime.Parse(Console.ReadLine());
+    //        var endDate = DateTime.Parse(Console.ReadLine());
+
+    //        var visit = new Visit()
+    //        {
+    //            CamperId = camperId,
+    //            NextOfKins = nextOfKinId,
+    //            StartDate = startDate,
+    //            EndDate = endDate
+    //        };
+    //        campContext.Visits.Add(visit);
+    //        campContext.SaveChanges();
+    //        AnsiConsole.Markup($"The [blue]visit[/] is added.");
+
+
+    //    }   
+    //}
+    var selectCamper = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Select [blue]camper[/] to receive a visit: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.Camper.SelectCampers()));
+    var camperId = Selections.Camper.SelectCamperIdFromPersonId(int.Parse(selectCamper[..2]));
+
+    using (var campContext = new CampContext())
+    {
+        var selectedCamper = campContext.Campers.Include(c => c.Kins)
+            .FirstOrDefault(c => c.Id == camperId);
+
+        if (selectedCamper != null)
+        {
+            var selectNextOfKin = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Select [blue]next of kin[/] that will [blue]visit[/] the camper: ")
+                    .PageSize(10)
+                    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                    .AddChoices(selectedCamper.Kins.Select(nok => $"{nok.Id.ToString().PadLeft(2)} - {nok.Person.FullName}")));
+
+            var nextOfKinId = int.Parse(selectNextOfKin[..2]);
+            var selectedNextOfKin = selectedCamper.Kins.FirstOrDefault(n => n.Id == nextOfKinId);
+
+            if (selectedNextOfKin != null)
+            {
+                AnsiConsole.MarkupLine($"Type in [blue]start date[/] and the [blue]end date[/] in the format mm/dd/yyyy:");
+                var startDate = DateTime.Parse(Console.ReadLine());
+                var endDate = DateTime.Parse(Console.ReadLine());
+
+                var visit = new Visit()
+                {
+                    CamperId = camperId,
+                    Camper = selectedCamper,
+                    StartDate = startDate,
+                    EndDate = endDate
+                };
+
+                visit.NextOfKins.Add(selectedNextOfKin); // Associate the selected NextOfKin with the Visit
+
+                campContext.Visits.Add(visit);
+                campContext.SaveChanges();
+                AnsiConsole.Markup($"The [blue]visit[/] is added.");
+            }
+            else
+            {
+                AnsiConsole.Markup($"Invalid selection for Next of Kin.");
+            }
+        }
+        else
+        {
+            AnsiConsole.Markup($"Invalid selection for Camper.");
+        }
+    }
 
 }
 
@@ -435,7 +564,7 @@ static void AssignCouncelor()
         .Title("Select [blue]councelor[/] to assign: ")
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        .AddChoices(Selections.Presentation.SelectCouncelors()));
+        .AddChoices(Selections.Councelor.SelectCouncelors()));
     var councelorId = Selections.Councelor.SelectCouncelorIdFromPersonId(int.Parse(selectCouncelor[..2]));
 
     using (var campContext = new CampContext())
@@ -449,7 +578,7 @@ static void AssignCouncelor()
                     .Title("Select [blue]cabin[/] to assign the [blue]councelor[/] to: ")
                     .PageSize(10)
                     .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                    .AddChoices(Selections.Presentation.SelectCabins()));
+                    .AddChoices(Selections.Cabins.SelectCabins()));
                 var cabinId = int.Parse(selectCabin[..2]);
 
                 var checkCabins = campContext.CouncelorAssignments.Find(cabinId);
@@ -483,7 +612,7 @@ static void AssignCamperToCabin()
         .Title("Select [blue]councelor[/] to assign: ")
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        .AddChoices(Selections.Presentation.SelectCampers()));
+        .AddChoices(Selections.Camper.SelectCampers()));
     var camperId = Selections.Camper.SelectCamperIdFromPersonId(int.Parse(selectCamper[..2]));
 
     using (var campContext = new CampContext())
@@ -496,7 +625,7 @@ static void AssignCamperToCabin()
                 .Title("Select [blue]cabin[/] to assign the [blue]councelor[/] to: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.Presentation.SelectCabins()));
+                .AddChoices(Selections.Cabins.SelectCabins()));
             var cabinId = int.Parse(selectCabin[..2]);
 
             var checkCabins = campContext.CouncelorAssignments.Count(c => c.CabinId == cabinId);

@@ -245,6 +245,26 @@ public class Selections
                 return result.ToArray();
             }
         }
+        public static string[] SelectNextOfKinToCamperFromId(int id)
+        {
+            using (var campContext = new CampContext())
+            {
+                var selectData = campContext.NextOfKins.Include(x => x.Person)
+                                            .Include(x => x.Camper.Person)
+                                            .Where(x => x.CamperId == id)
+                                            .OrderBy(c => c.Camper.Person.FirstName)
+                                            .ToList();
+                List<string> result = new List<string>();
+
+                foreach (var data in selectData)
+                {
+                    string temp = $"{data.Id}  '{data.Person.FullName}' is a relative to '{data.Camper.Person.FullName}'";
+                    result.Add(temp);
+                }
+                return result.ToArray();
+            }
+        }
+
     }
 
     public class Person

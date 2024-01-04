@@ -17,10 +17,9 @@ public class CampContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //"C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\"
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            //.SetBasePath("C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\")
+            //.SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath("C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\")
             .AddJsonFile("appsettings.json")
             .Build();
 
@@ -31,5 +30,27 @@ public class CampContext : DbContext
             new[] { DbLoggerCategory.Database.Name },
             LogLevel.Information)
             .EnableSensitiveDataLogging();
+    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Councelor>()
+            .HasOne(c => c.Person)
+            .WithMany()
+            .HasForeignKey(c => c.PersonId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Camper>()
+            .HasOne(c => c.Person)
+            .WithMany()
+            .HasForeignKey(c => c.PersonId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<NextOfKin>()
+            .HasOne(n => n.Person)
+            .WithMany()
+            .HasForeignKey(n => n.PersonId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        base.OnModelCreating(modelBuilder);
     }
 }
