@@ -406,7 +406,50 @@ static void UpdateDate()
 
 static void AddData()
 {
+    string[] addDataSelections = new[]
+    {
+        "Add new person",
+    };
 
+    var addDataSelection = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Add data: [blue]What data do you want to add?[/]?")
+            .PageSize(10)
+            .MoreChoicesText("[green](Move up and down with arrows)[/]")
+            .AddChoices(addDataSelections));
+
+    if (addDataSelection == addDataSelections[0])
+    {
+        AddPerson();
+    }
+}
+
+static void AddPerson()
+{
+    AnsiConsole.MarkupLine($"[blue]Add a new person:[/]");
+
+    AnsiConsole.MarkupLine("Enter first name:");
+    var firstName = Console.ReadLine();
+
+    AnsiConsole.MarkupLine("Enter last name:");
+    var lastName = Console.ReadLine();
+
+    AnsiConsole.MarkupLine("Enter birth date (mm/dd/yyyy):");
+    var birthDateString = Console.ReadLine();
+    var birthDate = DateTime.Parse(birthDateString);
+
+    var newPerson = new Person
+    {
+        FirstName = firstName,
+        LastName = lastName,
+        BirthDate = birthDate
+    };
+    using (CampContext context = new CampContext())
+    {
+        context.Add<Person>(newPerson);
+        context.SaveChanges();
+    }
+    AnsiConsole.Markup($"[blue]Person {newPerson.FirstName} {newPerson.LastName} added successfully.[/]");
 }
 
 static void AddVisit()
