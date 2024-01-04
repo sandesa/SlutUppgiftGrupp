@@ -7,6 +7,34 @@ using CampSleepAway2._0;
 
 public class RemoveData
 {
+    //public static void DeleteEntity<T>(int id) where T : class
+    //{
+    //    using (var campContext = new CampContext())
+    //    {
+    //        var entityToDelete = campContext.Set<T>().Find(id);
+
+    //        if (entityToDelete != null)
+    //        {
+    //            campContext.Set<T>().Remove(entityToDelete);
+    //            int result = campContext.SaveChanges();
+    //            if (result > 0)
+    //            {
+    //                Console.WriteLine($"The {typeof(T).Name} with ID {id} was deleted.");
+    //            }
+    //            else
+    //            {
+    //                Console.WriteLine($"The {typeof(T).Name} with ID {id} couldn't be removed.");
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Console.WriteLine($"The {typeof(T).Name} with ID {id} couldn't be found.");
+    //        }
+    //    }
+    //    RemoveData.DeleteEntity<Cabin>(cabinId);
+    //    RemoveData.DeleteEntity<Camper>(camperId);
+    //}
+
     public class Cabin
     {
         public static void DeleteCabin(int id)
