@@ -399,11 +399,6 @@ static void DeleteData()
     }
 }
 
-static void UpdateDate()
-{
-
-}
-
 static void AddData()
 {
     string[] addDataSelections = new[]
