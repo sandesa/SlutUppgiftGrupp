@@ -481,9 +481,9 @@ static void AddCamper()
 
     var newCamper = new Camper
     {
-        //FirstName = firstName,
-        //LastName = lastName,
-        //BirthDate = birthDate,
+        FirstName = firstName,
+        LastName = lastName,
+        BirthDate = birthDate,
         PersonId = selectedPerson.Id
     };
 
