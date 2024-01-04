@@ -19,7 +19,8 @@ public class CampContext : DbContext
     {
         //"C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\"
         var configuration = new ConfigurationBuilder()
-            .SetBasePath("C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\")
+            .SetBasePath(Directory.GetCurrentDirectory())
+            //.SetBasePath("C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\")
             .AddJsonFile("appsettings.json")
             .Build();
 
