@@ -42,13 +42,17 @@ using (var campContext = new CampContext())
     //Selections.SelectPersonFromNextOfKin(1);
     //Selections.SelectPerson();
 
+    //var camper = new Camper()
+    //{
+    //    PersonId = 1
+    //};
     //var person = new Person()
     //{
     //    FirstName = "Samuel",
     //    LastName = "Sandenäs",
     //    BirthDate = DateTime.Parse("02/03/1998")
     //};
-    //campContext.People.Add(person);
+    //campContext.Campers.Add(camper);
     //campContext.SaveChanges();
 
     //var people = ReadCSV("C:\\Users\\samue\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\data.csv");
@@ -99,7 +103,7 @@ static void Menu()
     {
         UpdateDate();
     }
-    else
+    else if (menuSelection == menuSelections[6])
     {
         DeleteData();
     }
@@ -109,7 +113,77 @@ static void Menu()
 
 static void DeleteData()
 {
+    string[] tableSelections= new[]
+    {
+        "Cabins", "Campers", "Camper stays", "Councelors",
+        "Councelor assignments", "Next of kin", "Visits", "People"
+    };
+    
 
+    var selectTable = AnsiConsole.Prompt(
+    new SelectionPrompt<string>()
+        .Title("Select [blue]table[/] to delete from: ")
+        .PageSize(10)
+        .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+        .AddChoices(tableSelections));
+    if (selectTable == tableSelections[0])
+    {
+        if (Selections.SelectionsToArray.SelectCabins().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete= AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.SelectionsToArray.SelectCabins()));
+            var idToDelete= int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete cabin: {Selections.Cabins.SelectCabinTitleFromID(idToDelete)}?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.Cabin.DeleteCabin(idToDelete);
+            }
+            else
+            {
+                Console.WriteLine("The cabin was not deleted.");
+            }
+        }
+    }
+    else if (selectTable == tableSelections[1])
+    {
+        if (Selections.SelectionsToArray.SelectCampers().Count() == 0)
+        {
+            Console.WriteLine("The table is empty.");
+        }
+        else
+        {
+            var selectDataToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select [blue]data[/] to delete: ")
+            .PageSize(10)
+            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+            .AddChoices(Selections.SelectionsToArray.SelectCampers()));
+            var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+            Console.WriteLine($"Are you sure you want to delete camper: {Selections.Camper.SelectCamperFromID(idToDelete)}?  y/n");
+            string warning = Console.ReadLine();
+
+            if (warning == "y")
+            {
+                RemoveData.Camper.DeleteCamper(idToDelete);
+            }
+            else
+            {
+                Console.WriteLine("The camper was not deleted.");
+            }   
+        }
+    }
 }
 
 static void UpdateDate()
@@ -130,10 +204,10 @@ static void AddVisit()
 static void SelectData()
     {
         string[] showDataSelections = new[]
-{
+        {
         "Cabins", "Campers", "Camper stays", "Councelors",
         "Councelor assignments", "Next of kin", "Visits", "People"
-    };
+        };
         var showData = AnsiConsole.Prompt(
         new SelectionPrompt<string>()
             .Title("Show data: [blue]What data do you wanna look at?[/]?")
@@ -142,35 +216,35 @@ static void SelectData()
             .AddChoices(showDataSelections));
         if (showData == showDataSelections[0])
         {
-            PrintData(Selections.SelectCabins());
+            PrintData(Selections.SelectionsToArray.SelectCabins());
         }
         else if (showData == showDataSelections[1])
         {
-            PrintData(Selections.SelectCampers());
+            PrintData(Selections.SelectionsToArray.SelectCampers());
         }
         else if (showData == showDataSelections[2])
         {
-            PrintData(Selections.SelectCamperStays());
+            PrintData(Selections.SelectionsToArray.SelectCamperStays());
         }
         else if (showData == showDataSelections[3])
         {
-            PrintData(Selections.SelectCouncelors());
+            PrintData(Selections.SelectionsToArray.SelectCouncelors());
         }
         else if (showData == showDataSelections[4])
         {
-            PrintData(Selections.SelectCouncelorAssignments());
+            PrintData(Selections.SelectionsToArray.SelectCouncelorAssignments());
         }
         else if (showData == showDataSelections[5])
         {
-            PrintData(Selections.SelectNextOfKinToCampers());
+            PrintData(Selections.SelectionsToArray.SelectNextOfKinToCampers());
         }
         else if (showData == showDataSelections[6])
         {
-            PrintData(Selections.SelectVisits());
+            PrintData(Selections.SelectionsToArray.SelectVisits());
         }
         else if (showData == showDataSelections[7])
         {
-            PrintData(Selections.SelectPeople());
+            PrintData(Selections.SelectionsToArray.SelectPeople());
         }
     }
 
@@ -181,7 +255,7 @@ static void AssignCouncelor()
         .Title("Select [blue]councelor[/] to assign: ")
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        .AddChoices(Selections.SelectCouncelors()));
+        .AddChoices(Selections.SelectionsToArray.SelectCouncelors()));
     var councelorId = int.Parse(selectCouncelor[..2]);
 
     using (var campContext = new CampContext())
@@ -195,7 +269,7 @@ static void AssignCouncelor()
                     .Title("Select [blue]cabin[/] to assign the [blue]councelor[/] to: ")
                     .PageSize(10)
                     .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                    .AddChoices(Selections.SelectCabins()));
+                    .AddChoices(Selections.SelectionsToArray.SelectCabins()));
                 var cabinId = int.Parse(selectCabin[..2]);
 
                 var checkCabins = campContext.CouncelorAssignments.Find(cabinId);
@@ -227,7 +301,7 @@ static void AssignCamperToCabin()
         .Title("Select [blue]councelor[/] to assign: ")
         .PageSize(10)
         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        .AddChoices(Selections.SelectCampers()));
+        .AddChoices(Selections.SelectionsToArray.SelectCampers()));
     var camperId = int.Parse(selectCamper[..2]);
 
     using (var campContext = new CampContext())
@@ -240,7 +314,7 @@ static void AssignCamperToCabin()
                 .Title("Select [blue]cabin[/] to assign the [blue]councelor[/] to: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.SelectCabins()));
+                .AddChoices(Selections.SelectionsToArray.SelectCabins()));
             var cabinId = int.Parse(selectCabin[..2]);
 
             var checkCabins = campContext.CouncelorAssignments.Count(c => c.CabinId == cabinId);
