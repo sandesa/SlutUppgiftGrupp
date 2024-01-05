@@ -27,10 +27,10 @@ public class UpdateDate
             UpdateCabin();
         }
     }
-    
+
     public void UpdateCabin()
     {
-        var updateCabins= AnsiConsole.Prompt(
+        var updateCabins = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select cabin to [blue]update:[/]")
                 .PageSize(10)
@@ -57,8 +57,8 @@ public class UpdateDate
                 {
                     Console.WriteLine("Type the new title:");
                     string newTitle = Console.ReadLine();
-                    while (newTitle.IsNullOrEmpty()) 
-                    { 
+                    while (newTitle.IsNullOrEmpty())
+                    {
                         Console.WriteLine("The cabin must have a title.");
                         newTitle = Console.ReadLine();
                     }
@@ -82,8 +82,51 @@ public class UpdateDate
         }
     }
 
-    
+    static void UpdatePerson()
+    {
+        AnsiConsole.MarkupLine($"[blue]Update person information:[/]");
+
+        var existingPersons = GetExistingPersons();
+
+        if (existingPersons.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[red]No existing persons to update.[/]");
+            return;
+        }
+
+        var selectedPerson = AnsiConsole.Prompt(
+            new SelectionPrompt<Person>()
+            .Title("Select the person to update:")
+            .PageSize(10)
+            .MoreChoicesText("[green](Move up and down with arrows)[/]")
+            .AddChoices(existingPersons));
+
+        AnsiConsole.MarkupLine("Enter updated first name:");
+        var updatedFirstName = Console.ReadLine();
+
+        AnsiConsole.MarkupLine("Enter updated last name:");
+        var updatedLastName = Console.ReadLine();
+
+        selectedPerson.FirstName = updatedFirstName;
+        selectedPerson.LastName = updatedLastName;
+
+        using (CampContext context = new CampContext())
+        {
+            context.Update<Person>(selectedPerson);
+            context.SaveChanges();
+        }
+
+        AnsiConsole.Markup($"[blue]Person {selectedPerson.FullName} updated successfully.[/]");
+    }
+    static List<Person> GetExistingPersons()
+    {
+        using (CampContext context = new CampContext())
+        {
+            return context.People.ToList();
+        }
+    }
+
 }
 
-    
+
 
