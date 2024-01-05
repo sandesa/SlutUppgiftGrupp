@@ -18,5 +18,5 @@ public class Person
     public string FullName => $"{FirstName} {LastName}";
 
     [DataType(DataType.Date)]
-    public DateTime BirthDate { get; set; } 
+    public DateTime? BirthDate { get; set; } 
 }

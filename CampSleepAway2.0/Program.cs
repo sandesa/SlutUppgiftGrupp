@@ -110,7 +110,7 @@ static void Menu()
     }
     else if (menuSelection == menuSelections[5])
     {
-        UpdateDate();
+        UpdateData.DataUpdate();
     }
     else if (menuSelection == menuSelections[6])
     {
@@ -420,7 +420,7 @@ static void AddData()
     }
     else if (addDataSelection == addDataSelections[1])
     {
-        AddCamper();
+        //AddCamper();
     }
 }
 
@@ -452,38 +452,38 @@ static void AddPerson()
     AnsiConsole.Markup($"[blue]Person {newPerson.FirstName} {newPerson.LastName} added successfully.[/]");
 }
 
-static void AddCamper()
-{
-    AnsiConsole.MarkupLine($"[blue]Add a new camper:[/]");
+//static void AddCamper()
+//{
+//    AnsiConsole.MarkupLine($"[blue]Add a new camper:[/]");
 
-    AnsiConsole.MarkupLine("Enter Camper's first name:");
-    var firstName = Console.ReadLine();
+//    AnsiConsole.MarkupLine("Enter Camper's first name:");
+//    var firstName = Console.ReadLine();
 
-    AnsiConsole.MarkupLine("Enter Camper's last name:");
-    var lastName = Console.ReadLine();
+//    AnsiConsole.MarkupLine("Enter Camper's last name:");
+//    var lastName = Console.ReadLine();
 
-    AnsiConsole.MarkupLine("Enter Camper's birth date (mm/dd/yyyy):");
-    var birthDateString = Console.ReadLine();
-    var birthDate = DateTime.Parse (birthDateString);
+//    AnsiConsole.MarkupLine("Enter Camper's birth date (mm/dd/yyyy):");
+//    var birthDateString = Console.ReadLine();
+//    var birthDate = DateTime.Parse (birthDateString);
 
-    var existingPersons = GetExistingPersons();
+//    var existingPersons = GetExistingPersons();
 
-    var selectedPerson = AnsiConsole.Prompt(
-        new SelectionPrompt<Person>()
-        .PageSize(10)
-        .MoreChoicesText("[green](Move up and down with arrows)[/]")
-        .AddChoices(existingPersons));
+//    var selectedPerson = AnsiConsole.Prompt(
+//        new SelectionPrompt<Person>()
+//        .PageSize(10)
+//        .MoreChoicesText("[green](Move up and down with arrows)[/]")
+//        .AddChoices(existingPersons));
 
-    var newCamper = new Camper
-    {
-        FirstName = firstName,
-        LastName = lastName,
-        BirthDate = birthDate,
-        PersonId = selectedPerson.Id
-    };
+//    var newCamper = new Camper
+//    {
+//        FirstName = firstName,
+//        LastName = lastName,
+//        BirthDate = birthDate,
+//        PersonId = selectedPerson.Id
+//    };
 
-    AnsiConsole.Markup($"[blue]Camper {selectedPerson.FullName} added successfully.[/]");
-}
+//    AnsiConsole.Markup($"[blue]Camper {selectedPerson.FullName} added successfully.[/]");
+//}
 
 static List <Person> GetExistingPersons()
 {
