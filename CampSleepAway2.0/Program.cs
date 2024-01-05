@@ -11,16 +11,8 @@ public class Program
     static bool run = true;
     static void Main(string[] args)
     {
-        //var people = ReadPeopleCSV("people.csv");
-        //using (var campContext = new CampContext())
-        //{
-        //    foreach (var person in people)
-        //    {
-        //        campContext.People.Add(person);
-        //    }
-        //    campContext.SaveChanges();
-        //}
-        
+        //ReadDataCSV("C:\\Users\\Samuel Sandenäs\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\data.csv");
+
         using (var campContext = new CampContext())
         {
             while (run)
@@ -794,10 +786,14 @@ public class Program
         }
     }
 
-    static List<Person> ReadPeopleCSV(string filePath)
+    static void ReadDataCSV(string filePath)
     {
         var people = new List<Person>();
-        //C: \Users\Samuel Sandenäs\source\repos\SlutUppgiftGrupp\CampSleepAway2.0\people.csv
+        var campers = new List<Camper>();
+        var councelors = new List<Councelor>();
+        var nextOfKins = new List<NextOfKin>();
+        var cabins = new List<Cabin>();
+        //C: \Users\Samuel Sandenäs\source\repos\SlutUppgiftGrupp\CampSleepAway2.0\data.csv
 
         using var reader = new StreamReader(filePath);
 
@@ -811,11 +807,12 @@ public class Program
 
             var values = line.Split(',');
 
-            if (values.Length == 3)
+            if (values.Length == 4)
             {
-                var firstName = values[0];
-                var lastName = values[1];
-                var birthDate = DateTime.ParseExact(values[2], "mm/dd/yyyy", null);
+                var assignment = values[0];
+                var firstName = values[1];
+                var lastName = values[2];
+                var birthDate = DateTime.ParseExact(values[3], "mm/dd/yyyy", null);
 
                 var person = new Person
                 {
@@ -824,8 +821,65 @@ public class Program
                     BirthDate = birthDate
                 };
                 people.Add(person);
+                using (var campContext = new CampContext())
+                {
+                    foreach (var p in people)
+                    {
+                        campContext.People.Add(p);
+                        campContext.SaveChanges();
+
+                        if (assignment == "Campers")
+                        {
+                            var camper = new Camper()
+                            {
+                                PersonId = p.Id
+                            };
+                            campers.Add(camper);
+                            campContext.Campers.Add(camper);
+                        }
+                        else if (assignment == "Councelors")
+                        {
+                            var councelor = new Councelor()
+                            {
+                                PersonId = p.Id
+                            };
+                            councelors.Add(councelor);
+                            campContext.Councelors.Add(councelor);
+                        }
+                        else if (assignment == "NextOfKins")
+                        {
+                            var nextOfKin1 = new NextOfKin()
+                            {
+                                PersonId = p.Id,
+                                CamperId = 1
+                            };
+                            nextOfKins.Add(nextOfKin1);
+                            campContext.NextOfKins.Add(nextOfKin1);
+                        }
+                    }
+                    campContext.SaveChanges();
+                }
+            }
+            else if (values.Length == 3)
+            {
+                var title = values[1];
+                var numberOfResidence = values[2];
+
+                var cabin = new Cabin
+                {
+                    Title = title,
+                    NumberOfResidence = int.Parse(numberOfResidence)
+                };
+                cabins.Add(cabin);
+                using (var campContext = new CampContext())
+                {
+                    foreach (var c in people)
+                    {
+                        campContext.Cabins.Add(cabin);
+                    }
+                    campContext.SaveChanges();
+                }
             }
         }
-        return people;
     }
 }
