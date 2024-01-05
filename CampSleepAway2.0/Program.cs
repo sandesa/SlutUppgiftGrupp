@@ -11,6 +11,16 @@ public class Program
     static bool run = true;
     static void Main(string[] args)
     {
+        //var people = ReadPeopleCSV("people.csv");
+        //using (var campContext = new CampContext())
+        //{
+        //    foreach (var person in people)
+        //    {
+        //        campContext.People.Add(person);
+        //    }
+        //    campContext.SaveChanges();
+        //}
+        
         using (var campContext = new CampContext())
         {
             while (run)
@@ -33,6 +43,7 @@ public class Program
             .PageSize(10)
             .MoreChoicesText("[Green](Move up and down with arrows)[/]")
             .AddChoices(menuSelections));
+        Console.Clear();
 
         if (menuSelection == menuSelections[0])
         {
@@ -105,7 +116,17 @@ public class Program
                 }));
                 if (deleteAllOrOne == "All")
                 {
-                    RemoveData.Cabins.DeleteAllCabins();
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.Cabins.DeleteAllCabins();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The cabins was not deleted.");
+                    }
                 }
                 else
                 {
@@ -126,7 +147,7 @@ public class Program
                     }
                     else
                     {
-                        Console.WriteLine("The cabin was not deleted.");
+                        Console.WriteLine("The data was not deleted.");
                     }
                 }
             }
@@ -150,7 +171,17 @@ public class Program
                 }));
                 if (deleteAllOrOne == "All")
                 {
-                    RemoveData.Campers.DeleteAllCampers();
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.Campers.DeleteAllCampers();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The data was not deleted.");
+                    }
                 }
                 else
                 {
@@ -184,24 +215,50 @@ public class Program
             }
             else
             {
-                var selectDataToDelete = AnsiConsole.Prompt(
+                var deleteAllOrOne = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                .Title("Select [blue]data[/] to delete: ")
+                .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.CamperStay.SelectCamperStays()));
-                var idToDelete = int.Parse(selectDataToDelete[..2]);
-
-                Console.WriteLine($"Are you sure you want to delete the data?  y/n");
-                string warning = Console.ReadLine();
-
-                if (warning == "y")
+                .AddChoices(new[]
                 {
-                    RemoveData.CamperStays.DeleteCamperStay(idToDelete);
+                "All", "One"
+                }));
+                if (deleteAllOrOne == "All")
+                {
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.CamperStays.DeleteAllCamperStays();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The data was not deleted.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("The camper stay was not deleted.");
+                    var selectDataToDelete = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Select [blue]data[/] to delete: ")
+                    .PageSize(10)
+                    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                    .AddChoices(Selections.CamperStay.SelectCamperStays()));
+                    var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+                    Console.WriteLine($"Are you sure you want to delete the data?  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.CamperStays.DeleteCamperStay(idToDelete);
+                    }
+                    else
+                    {
+                        Console.WriteLine("The camper stay was not deleted.");
+                    }
                 }
             }
         }
@@ -213,24 +270,50 @@ public class Program
             }
             else
             {
-                var selectDataToDelete = AnsiConsole.Prompt(
+                var deleteAllOrOne = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                .Title("Select [blue]data[/] to delete: ")
+                .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.Councelor.SelectCouncelors()));
-                var idToDelete = int.Parse(selectDataToDelete[..2]);
-
-                Console.WriteLine($"Are you sure you want to delete councelor: '{Selections.Councelor.SelectCouncelorFromPersonID(idToDelete)}'?  y/n");
-                string warning = Console.ReadLine();
-
-                if (warning == "y")
+                .AddChoices(new[]
                 {
-                    RemoveData.Councelors.DeleteCouncelor(Selections.Councelor.SelectCouncelorIdFromPersonId(idToDelete));
+                "All", "One"
+                }));
+                if (deleteAllOrOne == "All")
+                {
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.Councelors.DeleteAllCouncelors();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The data was not deleted.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("The councelor was not deleted.");
+                    var selectDataToDelete = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Select [blue]data[/] to delete: ")
+                    .PageSize(10)
+                    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                    .AddChoices(Selections.Councelor.SelectCouncelors()));
+                    var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+                    Console.WriteLine($"Are you sure you want to delete councelor: '{Selections.Councelor.SelectCouncelorFromPersonID(idToDelete)}'?  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.Councelors.DeleteCouncelor(Selections.Councelor.SelectCouncelorIdFromPersonId(idToDelete));
+                    }
+                    else
+                    {
+                        Console.WriteLine("The councelor was not deleted.");
+                    }
                 }
             }
         }
@@ -242,24 +325,50 @@ public class Program
             }
             else
             {
-                var selectDataToDelete = AnsiConsole.Prompt(
+                var deleteAllOrOne = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                .Title("Select [blue]data[/] to delete: ")
+                .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.CouncelorAssignment.SelectCouncelorAssignments()));
-                var idToDelete = int.Parse(selectDataToDelete[..2]);
-
-                Console.WriteLine($"Are you sure you want to delete councelor assignment data?  y/n");
-                string warning = Console.ReadLine();
-
-                if (warning == "y")
+                .AddChoices(new[]
                 {
-                    RemoveData.CouncelorAssignments.DeleteCouncelorAssignment(idToDelete);
+                "All", "One"
+                }));
+                if (deleteAllOrOne == "All")
+                {
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.CouncelorAssignments.DeleteAllCouncelorAssignments();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The data was not deleted.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("The councelor assignment data was not deleted.");
+                    var selectDataToDelete = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Select [blue]data[/] to delete: ")
+                    .PageSize(10)
+                    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                    .AddChoices(Selections.CouncelorAssignment.SelectCouncelorAssignments()));
+                    var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+                    Console.WriteLine($"Are you sure you want to delete councelor assignment data?  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.CouncelorAssignments.DeleteCouncelorAssignment(idToDelete);
+                    }
+                    else
+                    {
+                        Console.WriteLine("The councelor assignment data was not deleted.");
+                    }
                 }
             }
         }
@@ -271,24 +380,50 @@ public class Program
             }
             else
             {
-                var selectDataToDelete = AnsiConsole.Prompt(
+                var deleteAllOrOne = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                .Title("Select [blue]data[/] to delete: ")
+                .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.NextOfKin.SelectNextOfKin()));
-                var idToDelete = int.Parse(selectDataToDelete[..2]);
-
-                Console.WriteLine($"Are you sure you want to delete data?  y/n");
-                string warning = Console.ReadLine();
-
-                if (warning == "y")
+                .AddChoices(new[]
                 {
-                    RemoveData.NextOfKins.DeleteNextOfKin(idToDelete);
+                "All", "One"
+                }));
+                if (deleteAllOrOne == "All")
+                {
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.NextOfKins.DeleteAllNextOfKin();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The data was not deleted.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("The next of kin data was not deleted.");
+                    var selectDataToDelete = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Select [blue]data[/] to delete: ")
+                    .PageSize(10)
+                    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                    .AddChoices(Selections.NextOfKin.SelectNextOfKin()));
+                    var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+                    Console.WriteLine($"Are you sure you want to delete data?  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.NextOfKins.DeleteNextOfKin(idToDelete);
+                    }
+                    else
+                    {
+                        Console.WriteLine("The next of kin data was not deleted.");
+                    }
                 }
             }
         }
@@ -300,24 +435,50 @@ public class Program
             }
             else
             {
-                var selectDataToDelete = AnsiConsole.Prompt(
+                var deleteAllOrOne = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                .Title("Select [blue]data[/] to delete: ")
+                .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.Visit.SelectVisits()));
-                var idToDelete = int.Parse(selectDataToDelete[..2]);
-
-                Console.WriteLine($"Are you sure you want to delete data?  y/n");
-                string warning = Console.ReadLine();
-
-                if (warning == "y")
+                .AddChoices(new[]
                 {
-                    RemoveData.Visits.DeleteVisit(idToDelete);
+                "All", "One"
+                }));
+                if (deleteAllOrOne == "All")
+                {
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.Visits.DeleteAllVisits();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The data was not deleted.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("The visit data was not deleted.");
+                    var selectDataToDelete = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Select [blue]data[/] to delete: ")
+                    .PageSize(10)
+                    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                    .AddChoices(Selections.Visit.SelectVisits()));
+                    var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+                    Console.WriteLine($"Are you sure you want to delete data?  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.Visits.DeleteVisit(idToDelete);
+                    }
+                    else
+                    {
+                        Console.WriteLine("The visit data was not deleted.");
+                    }
                 }
             }
         }
@@ -329,24 +490,50 @@ public class Program
             }
             else
             {
-                var selectDataToDelete = AnsiConsole.Prompt(
+                var deleteAllOrOne = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                .Title("Select [blue]data[/] to delete: ")
+                .Title("Do you want to [blue]delete all[/] data or delete just [blue]one[/]?: ")
                 .PageSize(10)
                 .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                .AddChoices(Selections.Person.SelectPeople()));
-                var idToDelete = int.Parse(selectDataToDelete[..2]);
-
-                Console.WriteLine($"Are you sure you want to delete '{Selections.Person.SelectFullNameFromPersonID(idToDelete)}' and all the connections?  y/n");
-                string warning = Console.ReadLine();
-
-                if (warning == "y")
+                .AddChoices(new[]
                 {
-                    RemoveData.People.DeletePerson(idToDelete);
+                "All", "One"
+                }));
+                if (deleteAllOrOne == "All")
+                {
+                    Console.WriteLine($"Are you sure you want to delete all data??  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.People.DeleteAllPeople();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The data was not deleted.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("The camper was not deleted.");
+                    var selectDataToDelete = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Select [blue]data[/] to delete: ")
+                    .PageSize(10)
+                    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
+                    .AddChoices(Selections.Person.SelectPeople()));
+                    var idToDelete = int.Parse(selectDataToDelete[..2]);
+
+                    Console.WriteLine($"Are you sure you want to delete '{Selections.Person.SelectFullNameFromPersonID(idToDelete)}' and all the connections?  y/n");
+                    string warning = Console.ReadLine();
+
+                    if (warning == "y")
+                    {
+                        RemoveData.People.DeletePerson(idToDelete);
+                    }
+                    else
+                    {
+                        Console.WriteLine("The camper was not deleted.");
+                    }
                 }
             }
         }
@@ -552,7 +739,7 @@ public class Program
     {
         var selectCamper = AnsiConsole.Prompt(
         new SelectionPrompt<string>()
-            .Title("Select [blue]councelor[/] to assign: ")
+            .Title("Select [blue]camper[/] to assign: ")
             .PageSize(10)
             .MoreChoicesText("[Green](Move up and down with arrows)[/]")
             .AddChoices(Selections.Camper.SelectCampers()));
@@ -603,19 +790,16 @@ public class Program
     {
         foreach (var data in arrayOfData)
         {
-            AnsiConsole.MarkupLine($"[blue]{data}[/]");
+            AnsiConsole.MarkupLine($"[green]{data}[/]");
         }
     }
 
-    static List<Person> ReadCSV(string filePath)
+    static List<Person> ReadPeopleCSV(string filePath)
     {
         var people = new List<Person>();
-        //C: \Users\Samuel Sandenäs\source\repos\SlutUppgiftGrupp\CampSleepAway2.0\data.csv
+        //C: \Users\Samuel Sandenäs\source\repos\SlutUppgiftGrupp\CampSleepAway2.0\people.csv
 
         using var reader = new StreamReader(filePath);
-
-        // Read the header line
-        var headerLine = reader.ReadLine();
 
         while (!reader.EndOfStream)
         {
@@ -625,35 +809,14 @@ public class Program
                 break;
             }
 
-            // Split the line by comma
             var values = line.Split(',');
 
             if (values.Length == 3)
             {
                 var firstName = values[0];
                 var lastName = values[1];
-                var birthDate = DateTime.ParseExact(values[2], "d/M/yyyy", null);
+                var birthDate = DateTime.ParseExact(values[2], "mm/dd/yyyy", null);
 
-                // Create a Department object if it doesn't exist
-                //var department = departments.Find(d => d.Name == departmentName);
-                //if (department is null)
-                //{
-                //    department = new Department
-                //    {
-                //        Name = departmentName
-                //    };
-                //    departments.Add(department);
-                //}
-
-                // Create EmployeeProfile object
-                //var profile = new EmployeeProfile
-                //{
-                //    Phone = phone,
-                //    Email = email
-                //};
-                //profiles.Add(profile);
-
-                // Create Employee object
                 var person = new Person
                 {
                     FirstName = firstName,
@@ -661,20 +824,6 @@ public class Program
                     BirthDate = birthDate
                 };
                 people.Add(person);
-
-                // Create Skill objects
-                //foreach (var skillTitle in skillTitles)
-                //{
-                //    var skill = skills.Find(s => s.Title == skillTitle);
-                //    if (skill is null)
-                //    {
-                //        skill = new Skill { Title = skillTitle };
-                //        skills.Add(skill);
-                //    }
-
-                //    // Add skill to the employee's skills collection
-                //    employee.Skills.Add(skill);
-                //}
             }
         }
         return people;
