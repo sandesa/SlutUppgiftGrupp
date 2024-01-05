@@ -399,64 +399,6 @@ static void DeleteData()
     }
 }
 
-static void UpdateData()
-{
-    string[] updateDataSelections = new[]
-    {
-        "Update person information",
-    };
-
-    var updateDataSelection = AnsiConsole.Prompt(
-        new SelectionPrompt<string>()
-            .Title("Update data: [blue]What data do you want to update?[/]?")
-            .PageSize(10)
-            .MoreChoicesText("[green](Move up and down with arrows)[/]")
-            .AddChoices(updateDataSelections));
-
-    if (updateDataSelection == updateDataSelections[0])
-    {
-        UpdatePerson();
-    }
-}
-
-static void UpdatePerson()
-{
-    AnsiConsole.MarkupLine($"[blue]Update person information:[/]");
-
-    var existingPersons = GetExistingPersons();
-
-    if (existingPersons.Count == 0)
-    {
-        AnsiConsole.MarkupLine("[red]No existing persons to update.[/]");
-        return;
-    }
-
-    var selectedPerson = AnsiConsole.Prompt(
-        new SelectionPrompt<Person>()
-        .Title("Select the person to update:")
-        .PageSize(10)
-        .MoreChoicesText("[green](Move up and down with arrows)[/]")
-        .AddChoices(existingPersons));
-
-    AnsiConsole.MarkupLine("Enter updated first name:");
-    var updatedFirstName = Console.ReadLine();
-
-    AnsiConsole.MarkupLine("Enter updated last name:");
-    var updatedLastName = Console.ReadLine();
-
-    selectedPerson.FirstName = updatedFirstName;
-    selectedPerson.LastName = updatedLastName;
-
-    using (CampContext context = new CampContext())
-    {
-        context.Update<Person>(selectedPerson);
-        context.SaveChanges();
-    }
-
-    AnsiConsole.Markup($"[blue]Person {selectedPerson.FullName} updated successfully.[/]");
-}
-
-
 static void AddData()
 {
     string[] addDataSelections = new[]
