@@ -1,10 +1,6 @@
 ﻿using CampSleepAway2._0;
-using Spectre.Console;
-using Microsoft.EntityFrameworkCore.Storage.Json;
-using System;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Spectre.Console;
 
 public class Program
 {
@@ -12,6 +8,7 @@ public class Program
     static void Main(string[] args)
     {
         //ReadDataCSV("C:\\Users\\Samuel Sandenäs\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\data.csv");
+        //ReadDataCSV("data.csv");
 
         using (var campContext = new CampContext())
         {
@@ -821,44 +818,6 @@ public class Program
                     BirthDate = birthDate
                 };
                 people.Add(person);
-                using (var campContext = new CampContext())
-                {
-                    foreach (var p in people)
-                    {
-                        campContext.People.Add(p);
-                        campContext.SaveChanges();
-
-                        if (assignment == "Campers")
-                        {
-                            var camper = new Camper()
-                            {
-                                PersonId = p.Id
-                            };
-                            campers.Add(camper);
-                            campContext.Campers.Add(camper);
-                        }
-                        else if (assignment == "Councelors")
-                        {
-                            var councelor = new Councelor()
-                            {
-                                PersonId = p.Id
-                            };
-                            councelors.Add(councelor);
-                            campContext.Councelors.Add(councelor);
-                        }
-                        else if (assignment == "NextOfKins")
-                        {
-                            var nextOfKin1 = new NextOfKin()
-                            {
-                                PersonId = p.Id,
-                                CamperId = 1
-                            };
-                            nextOfKins.Add(nextOfKin1);
-                            campContext.NextOfKins.Add(nextOfKin1);
-                        }
-                    }
-                    campContext.SaveChanges();
-                }
             }
             else if (values.Length == 3)
             {
@@ -871,15 +830,73 @@ public class Program
                     NumberOfResidence = int.Parse(numberOfResidence)
                 };
                 cabins.Add(cabin);
-                using (var campContext = new CampContext())
+            }
+        }
+        foreach (var p in people)
+        {
+            using (var campContext = new CampContext())
+            {
+                campContext.People.Add(p);
+                campContext.SaveChanges();
+            }
+        }
+        foreach (var c in cabins)
+        {
+            using (var campContext = new CampContext())
+            {
+                campContext.Cabins.Add(c);
+                campContext.SaveChanges();
+            }
+        }
+        using (var campContext = new CampContext())
+        {
+            var takeCampers = campContext.People.Take(18).ToList();
+            foreach (var c in takeCampers)
+            {
+                var camper = new Camper()
                 {
-                    foreach (var c in people)
-                    {
-                        campContext.Cabins.Add(cabin);
-                    }
-                    campContext.SaveChanges();
-                }
+                    PersonId = c.Id
+                };
+                campers.Add(camper);
+            }
+            foreach (var c in campers)
+            {
+                campContext.Campers.Add(c);
+                campContext.SaveChanges();
+            }
+            var takeCouncelor = campContext.People.Skip(18).Take(3).ToList();
+            foreach (var c in takeCouncelor)
+            {
+                var councelor = new Councelor()
+                {
+                    PersonId = c.Id
+                };
+                councelors.Add(councelor);
+            }
+            foreach (var c in councelors)
+            {
+                campContext.Councelors.Add(c);
+                campContext.SaveChanges();
+            }
+            var takeNextOfKin = campContext.People.Skip(21).Take(7).ToList();
+            var takeTopSevenCamper = campContext.Campers.Take(7).ToList();
+
+            for (int i = 0; i < 7; i++)
+            {
+                var nextOfKin = new NextOfKin()
+                {
+                    PersonId = takeNextOfKin[i].Id,
+                    CamperId = takeTopSevenCamper[i].Id
+                };   
+                nextOfKins.Add(nextOfKin);
+            }
+            foreach (var nok in nextOfKins)
+            {
+                campContext.NextOfKins.Add(nok);
+                campContext.SaveChanges();
             }
         }
     }
 }
+
+

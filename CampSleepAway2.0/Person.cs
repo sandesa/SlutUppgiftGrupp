@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampSleepAway2._0;
@@ -20,5 +19,5 @@ public class Person
     public string FullName => $"{FirstName} {LastName}";
 
     [DataType(DataType.Date)]
-    public DateTime? BirthDate { get; set; } 
+    public DateTime? BirthDate { get; set; }
 }

@@ -9,10 +9,11 @@ public class Camper
     [Key]
     public int Id { get; set; }
 
+    [Required]
     [ForeignKey("PersonId")]
     public int PersonId { get; set; }
     public Person Person { get; set; } = null!;
 
     public ICollection<NextOfKin>? Kins { get; set; }
-    public ICollection<CamperStay>? Stays { get; set; } 
+    public ICollection<CamperStay>? Stays { get; set; }
 }

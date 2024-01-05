@@ -12,7 +12,7 @@ public class Selections
             {
                 var selectData = campContext.Cabins.Select(x => x.Id).ToList();
                 List<string> result = new List<string>();
-                
+
                 foreach (var data in selectData)
                 {
                     string temp = data.ToString();
@@ -55,7 +55,7 @@ public class Selections
         {
             using (var campContext = new CampContext())
             {
-                var selectData = campContext.Cabins.Select(x => x).Where(x => x.Id == id ).ToList();
+                var selectData = campContext.Cabins.Select(x => x).Where(x => x.Id == id).ToList();
                 if (selectData is not null)
                 {
                     foreach (var data in selectData)
@@ -90,12 +90,12 @@ public class Selections
             using (var campContext = new CampContext())
             {
                 var selectData = campContext.Campers.Select(x => x.Person).Where(c => c.Id == id).ToList();
-                
+
                 if (selectData is not null)
                 {
                     foreach (var data in selectData)
                     {
-                    return data.FullName;
+                        return data.FullName;
                     }
                 }
                 return "There is no person with ID: " + id;
@@ -383,6 +383,7 @@ public class Selections
             using (var campContext = new CampContext())
             {
                 var selectData = campContext.NextOfKins.Include(x => x.Person)
+                                            .Include(x => x.Camper.Person)
                                             .OrderBy(c => c.Camper.Person.FirstName)
                                             .ToList();
                 List<string> result = new List<string>();

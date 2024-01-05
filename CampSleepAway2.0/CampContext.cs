@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -35,14 +34,13 @@ public class CampContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        //base.OnModelCreating(modelBuilder);
-        //modelBuilder.Entity<Person>(entity =>
-        //{
-        //    entity.HasKey(x => x.Id);
-        //    entity.Property(x => x.Id).ValueGeneratedOnAdd();
-        //    entity.HasAlternateKey(x => new { x.Id, x.Id});
-        //});
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Person>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).ValueGeneratedOnAdd().UseIdentityColumn();
+        });
 
         modelBuilder.Entity<Councelor>()
             .HasOne(c => c.Person)

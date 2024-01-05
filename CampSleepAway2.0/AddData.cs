@@ -329,7 +329,7 @@ public class AddData
                         .MoreChoicesText("[green](Move up and down with arrows)[/]")
                         .AddChoices(Selections.Camper.SelectCampers()));
                 var camperId = Selections.Camper.SelectCamperIdFromPersonId(int.Parse(selectCamper[..2]));
-                var newNextOfKin = new NextOfKin{ PersonId = newPersonId, CamperId = camperId };
+                var newNextOfKin = new NextOfKin { PersonId = newPersonId, CamperId = camperId };
                 context.NextOfKins.Add(newNextOfKin);
                 context.SaveChanges();
             }

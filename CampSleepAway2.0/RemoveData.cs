@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using CampSleepAway2._0;
-using Microsoft.EntityFrameworkCore;
+﻿using CampSleepAway2._0;
 
 public class RemoveData
 {

@@ -1,5 +1,4 @@
 ﻿using CampSleepAway2._0;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Spectre.Console;
 
@@ -55,10 +54,10 @@ public class UpdateData
             UpdateVisit();
         }
     }
-    
+
     public static void UpdateCabin()
     {
-        var updateCabins= AnsiConsole.Prompt(
+        var updateCabins = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select cabin to [blue]update:[/]")
                 .PageSize(10)
@@ -97,7 +96,7 @@ public class UpdateData
 
     public static void UpdateCampers()
     {
-        var updateCampers= AnsiConsole.Prompt(
+        var updateCampers = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select camper to [blue]update:[/]")
                 .PageSize(10)
@@ -304,7 +303,7 @@ public class UpdateData
                     .AddChoices(selectColumns));
                 if (selectColumn == selectColumns[0])
                 {
-                    nextOfKin.PersonId= UpdateInt();
+                    nextOfKin.PersonId = UpdateInt();
                 }
                 else if (selectColumn == selectColumns[1])
                 {
@@ -442,5 +441,5 @@ public class UpdateData
 
 }
 
-    
+
 

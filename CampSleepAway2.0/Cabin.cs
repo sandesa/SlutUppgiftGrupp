@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CampSleepAway2._0;
 public class Cabin
@@ -11,7 +10,7 @@ public class Cabin
     public string Title { get; set; } = null!;
 
     [Required]
-    [Range(0,4)]
+    [Range(0, 4)]
     public int NumberOfResidence { get; set; }
 
     public CouncelorAssignment Councelor { get; set; } = null!;

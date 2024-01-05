@@ -9,10 +9,11 @@ public class Councelor
     [Key]
     public int Id { get; set; }
 
+    [Required]
     [ForeignKey("PersonId")]
     public int PersonId { get; set; }
     public Person Person { get; set; } = null!;
 
-    public ICollection<CouncelorAssignment>? CabinAssignments{ get; set; }
+    public ICollection<CouncelorAssignment>? CabinAssignments { get; set; }
 
 }
