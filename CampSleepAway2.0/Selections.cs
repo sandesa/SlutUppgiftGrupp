@@ -36,21 +36,6 @@ public class Selections
                 return result.ToArray();
             }
         }
-        public static string[] SelectCabinNumOfRes()
-        {
-            using (var campContext = new CampContext())
-            {
-                var selectData = campContext.Cabins.Select(x => x.NumberOfResidence).ToList();
-                List<string> result = new List<string>();
-
-                foreach (var data in selectData)
-                {
-                    string temp = data.ToString();
-                    result.Add(temp);
-                }
-                return result.ToArray();
-            }
-        }
         public static string SelectCabinTitleFromID(int id)
         {
             using (var campContext = new CampContext())
@@ -330,12 +315,12 @@ public class Selections
             {
                 var selectData = campContext.Cabins.Select(x => x).ToList();
                 List<string> result = new List<string>();
-                string title = "ID:\tTitle:\tNumber of residence:";
+                string title = "ID:\tTitle:\t\tNumber of residence:";
                 result.Add(title);
 
                 foreach (var data in selectData)
                 {
-                    string temp = $"{data.Id}\t{data.Title}\t{data.NumberOfResidence}";
+                    string temp = $"{data.Id}\t{data.Title}\t\t{data.NumberOfResidence}";
                     result.Add(temp);
                 }
                 return result.ToArray();

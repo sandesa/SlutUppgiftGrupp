@@ -189,7 +189,7 @@ public class UpdateData
     {
         var updateCouncelor = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("Select camper to [blue]update:[/]")
+                .Title("Select councelor to [blue]update:[/]")
                 .PageSize(10)
                 .MoreChoicesText("[green](Move up and down with arrows)[/]")
                 .AddChoices(Selections.Councelor.SelectCouncelors()));
@@ -233,7 +233,7 @@ public class UpdateData
     {
         var updateCouncelorAssignment = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("Select camper stay to [blue]update:[/]")
+                .Title("Select councelor assignment to [blue]update:[/]")
                 .PageSize(10)
                 .MoreChoicesText("[green](Move up and down with arrows)[/]")
                 .AddChoices(Selections.CouncelorAssignment.SelectCouncelorAssignments()));
@@ -280,7 +280,7 @@ public class UpdateData
     {
         var updateNextOfKin = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("Select camper to [blue]update:[/]")
+                .Title("Select Next Of Kin to [blue]update:[/]")
                 .PageSize(10)
                 .MoreChoicesText("[green](Move up and down with arrows)[/]")
                 .AddChoices(Selections.NextOfKin.SelectNextOfKin()));
@@ -319,7 +319,7 @@ public class UpdateData
     {
         var updatePerson = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("Select camper to [blue]update:[/]")
+                .Title("Select Person to [blue]update:[/]")
                 .PageSize(10)
                 .MoreChoicesText("[green](Move up and down with arrows)[/]")
                 .AddChoices(Selections.Person.SelectPeople()));

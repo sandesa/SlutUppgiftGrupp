@@ -9,14 +9,12 @@ public class Program
     {
         //ReadDataCSV("C:\\Users\\Samuel Sandenäs\\source\\repos\\SlutUppgiftGrupp\\CampSleepAway2.0\\data.csv");
         //ReadDataCSV("data.csv");
-
-        using (var campContext = new CampContext())
+        
+        while (run)
         {
-            while (run)
-            {
-                Menu();
-            }
+            Menu();
         }
+        
     }
 
     static void Menu()
@@ -52,18 +50,22 @@ public class Program
         else if (menuSelection == menuSelections[3])
         {
             AddVisit();
+            Console.WriteLine();
         }
         else if (menuSelection == menuSelections[4])
         {
             AddData.AddNewData();
+            Console.WriteLine();
         }
         else if (menuSelection == menuSelections[5])
         {
             UpdateData.DataUpdate();
+            Console.WriteLine();
         }
         else if (menuSelection == menuSelections[6])
         {
             DeleteData();
+            Console.WriteLine();
         }
         else if (menuSelection == menuSelections[7])
         {
@@ -530,47 +532,6 @@ public class Program
 
     static void AddVisit()
     {
-        //var selectCamper = AnsiConsole.Prompt(
-        //new SelectionPrompt<string>()
-        //    .Title("Select [blue]camper[/] to receive a visit: ")
-        //    .PageSize(10)
-        //    .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        //    .AddChoices(Selections.Camper.SelectCampers()));
-        //var camperId = Selections.Camper.SelectCamperIdFromPersonId(int.Parse(selectCamper[..2]));
-
-        //using (var campContext = new CampContext())
-        //{
-        //    var checkCouncelor = campContext.Visits.Find(camperId);
-        //    {   
-
-        //        var selectNextOfKin = AnsiConsole.Prompt(
-        //        new SelectionPrompt<string>()
-        //            .Title("Select [blue]next of kin[/] that will [blue]visit[/] the camper: ")
-        //            .PageSize(10)
-        //            .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-        //            .AddChoices(Selections.NextOfKin.SelectNextOfKinToCamperFromId(camperId)));
-        //        var nextOfKinId = int.Parse(selectNextOfKin[..2]);
-        //        //var kin = new 
-
-
-        //        AnsiConsole.MarkupLine($"Type in [blue]start date[/] and the [blue]end date[/] in the format mm/dd/yyyy:");
-        //        var startDate = DateTime.Parse(Console.ReadLine());
-        //        var endDate = DateTime.Parse(Console.ReadLine());
-
-        //        var visit = new Visit()
-        //        {
-        //            CamperId = camperId,
-        //            NextOfKins = nextOfKinId,
-        //            StartDate = startDate,
-        //            EndDate = endDate
-        //        };
-        //        campContext.Visits.Add(visit);
-        //        campContext.SaveChanges();
-        //        AnsiConsole.Markup($"The [blue]visit[/] is added.");
-
-
-        //    }   
-        //}
         var selectCamper = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select [blue]camper[/] to receive a visit: ")
@@ -591,7 +552,7 @@ public class Program
                         .Title("Select [blue]next of kin[/] that will [blue]visit[/] the camper: ")
                         .PageSize(10)
                         .MoreChoicesText("[Green](Move up and down with arrows)[/]")
-                        .AddChoices(selectedCamper.Kins.Select(nok => $"{nok.Id.ToString().PadLeft(2)} - {nok.Person.FullName}")));
+                        .AddChoices(Selections.NextOfKin.SelectNextOfKinToCamperFromId(camperId)));
 
                 var nextOfKinId = int.Parse(selectNextOfKin[..2]);
                 var selectedNextOfKin = selectedCamper.Kins.FirstOrDefault(n => n.Id == nextOfKinId);
@@ -609,24 +570,20 @@ public class Program
                         StartDate = startDate,
                         EndDate = endDate
                     };
-
-                    visit.NextOfKins.Add(selectedNextOfKin); // Associate the selected NextOfKin with the Visit
-
                     campContext.Visits.Add(visit);
                     campContext.SaveChanges();
-                    AnsiConsole.Markup($"The [blue]visit[/] is added.");
+                    AnsiConsole.MarkupLine($"The [blue]visit[/] is added.");
                 }
                 else
                 {
-                    AnsiConsole.Markup($"Invalid selection for Next of Kin.");
+                    AnsiConsole.MarkupLine($"Invalid selection for Next of Kin.");
                 }
             }
             else
             {
-                AnsiConsole.Markup($"Invalid selection for Camper.");
+                AnsiConsole.MarkupLine($"Invalid selection for Camper.");
             }
         }
-
     }
 
     static void SelectData()
@@ -769,6 +726,14 @@ public class Program
                         AnsiConsole.Markup($"[blue]Camper[/] is assigned to cabin: [blue]{Selections.Cabins.SelectCabinTitleFromID(cabinId)}[/]");
                     }
                 }
+                else
+                {
+                    Console.WriteLine("A councelor must be assigned to the cabin.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("The camper is already assigned to a cabin.");
             }
         }
 
@@ -790,7 +755,6 @@ public class Program
         var councelors = new List<Councelor>();
         var nextOfKins = new List<NextOfKin>();
         var cabins = new List<Cabin>();
-        //C: \Users\Samuel Sandenäs\source\repos\SlutUppgiftGrupp\CampSleepAway2.0\data.csv
 
         using var reader = new StreamReader(filePath);
 
